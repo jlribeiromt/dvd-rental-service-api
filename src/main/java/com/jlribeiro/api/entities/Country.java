@@ -5,6 +5,8 @@ import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
@@ -12,7 +14,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name="country")
-@SequenceGenerator(name="country_country_id_seq", allocationSize=25)
+@SequenceGenerator(name = "country_seq", sequenceName="country_country_id_seq",  initialValue = 1, allocationSize = 5)
 public class Country implements Serializable{
 
 	/**
@@ -21,29 +23,30 @@ public class Country implements Serializable{
 	private static final long serialVersionUID = -4303577098033991240L;
 
 	@Id
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "country_seq")
 	@Column(name="country_id")
-	private Integer CountryId;
+	private Integer countryId;
 	
-	@Column(name="country", nullable = false)
-	private String Country;
+	@Column(name="country", length = 50, nullable = false)
+	private String name;
 	
 	@OneToMany(mappedBy="country")
 	private List<City> city;
 
 	public Integer getCountryId() {
-		return CountryId;
+		return countryId;
 	}
 
 	public void setCountryId(Integer countryId) {
-		CountryId = countryId;
+		this.countryId = countryId;
 	}
 
-	public String getCountry() {
-		return Country;
+	public String getName() {
+		return name;
 	}
 
-	public void setCountry(String country) {
-		Country = country;
+	public void setName(String name) {
+		this.name = name;
 	}
 
 	public List<City> getCity() {
@@ -57,14 +60,8 @@ public class Country implements Serializable{
 	public Country() {		
 	}
 
-	public Country(Integer countryId, String country, List<City> city) {		
-		CountryId = countryId;
-		Country = country;
-		this.city = city;
+	public Country(Integer countryId, String name, List<City> city) {		
+		this.countryId = countryId;
+		this.name = name;		
 	}
-
-	@Override
-	public String toString() {
-		return "Country [CountryId=" + CountryId + ", Country=" + Country + "]";
-	}			
 }
